@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<div>
+	<head>
+	<meta charset="utf-8">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+</head>
+<body onload="amountUpdate(); daysUpdate(); Calculate();">
+
+<script>
+	function Calculate() {
+		var amount = document.getElementById('amount').value;
+		var days = document.getElementById('days').value;
+		if(amount>=100 && amount<=750 && days>=10 && days<=30 && days%1==0) {
+			var repayment = amount * Math.pow(1.14,days/365);
+			repayment = +repayment.toFixed(2);
+			document.getElementById("totalValue").innerHTML=repayment;
+			var currency = document.createElement('div');
+			currency.innerHTML = " zł";
+			while (currency.firstChild) {
+				document.getElementById("totalValue").appendChild(currency.firstChild);
+				
+			}
+			document.getElementById("totalValue").style.color = "#FCD8A7";
+		}
+		else {
+			document.getElementById("totalValue").innerHTML = "Data Error";
+			document.getElementById("totalValue").style.color = "red";
+		}
+	}
+	function amountUpdate() {
+		var amount = document.getElementById('amountSlider').value;
+		document.getElementById('amount').value = amount;
+		amountValidate();
+	}
+	function daysUpdate() {
+		var amount = document.getElementById('daysSlider').value;
+		document.getElementById('days').value = amount;
+		daysValidate();
+	}
+	function amountValidate() {
+		var amount = document.getElementById('amount').value;
+		if(amount>=100 && amount<=750) {
+			document.getElementById('amountSlider').value = amount;
+			document.getElementById("amount").style.border="solid";
+			document.getElementById("amount").style.borderWidth = "1px";
+			document.getElementById("amount").style.borderColor = "#FFFFFF";
+		}
+		else {
+			document.getElementById("amount").style.border="solid";
+			document.getElementById("amount").style.borderWidth = "2px";
+			document.getElementById("amount").style.borderColor = "red";
+		}
+		Calculate();
+	}
+	function daysValidate() {
+		var days = document.getElementById('days').value;
+		if(days>=10 && days<=30 && days%1==0) {
+			document.getElementById('daysSlider').value = days;
+			document.getElementById("days").style.border="solid";
+			document.getElementById("days").style.borderWidth = "1px";
+			document.getElementById("days").style.borderColor = "#FFFFFF";
+		}
+		else {
+			document.getElementById("days").style.border="solid";
+			document.getElementById("days").style.borderWidth = "2px";
+			document.getElementById("days").style.borderColor = "red";
+		}
+		Calculate();
+	}
+</script>
+	<div id="wrapper">
+	<h2>Credit calculator</h2>
+	<div id="amount_wrapper">
+	Loan amount</br><input type="range" min="100" max="750" value="425" step="25" class="slider" id="amountSlider" oninput="amountUpdate(); Calculate();"><input type="text" id="amount" class="displayValue" oninput="amountValidate()"></div>
+	<div id="days_wrapper">
+	Loan term</br><input type="range" min="10" max="30" value="20" step="1" class="slider" id="daysSlider" oninput="daysUpdate(); Calculate();"><input type="text" id="days" class="displayValue" oninput="daysValidate()"></div>
+	<div id="total">Total amount of repayment:</div><div id="totalValue"></div>
+	</div>
+	</div>
+</body>
+</html>
